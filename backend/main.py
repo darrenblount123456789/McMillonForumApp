@@ -51,10 +51,10 @@ def generate_presigned_url(s3_file_name, original_file_name, expiration=3600):
             },
             ExpiresIn=expiration
         )
-        # print(f"✅ Generated presigned URL: {presigned_url}")  # Debugging
+        # print(f"Generated presigned URL: {presigned_url}")  # Debugging
         return presigned_url
     except Exception as e:
-        print(f"❌ Error generating presigned URL: {e}")
+        print(f"Error generating presigned URL: {e}")
         return None
 
 
@@ -78,7 +78,7 @@ async def extract_text_from_file(file_content: bytes) -> str:
     # print(f"Extracting text... File size: {len(file_content)} bytes")
 
     if len(file_content) == 0:
-        print("🚨 File content is empty!")
+        print(" File content is empty!")
         return ""
 
     if file_content[:4] != b"PK\x03\x04":  # DOCX files are ZIP archives
@@ -88,7 +88,7 @@ async def extract_text_from_file(file_content: bytes) -> str:
     try:
         text = mammoth.extract_raw_text(BytesIO(file_content)).value
     except Exception as e:
-        print(f"❌ Error processing DOCX file: {e}")
+        print(f" Error processing DOCX file: {e}")
         text = ""
 
     return text
@@ -225,7 +225,7 @@ async def list_files(db: AsyncSession = Depends(get_db)):
     file_list = []
     for file in files:
         presigned_url = generate_presigned_url(file.s3_file_name, file.file_name)  #  Pass both names
-        # print(f"📢 Generating presigned URL for {file.file_name}: {presigned_url}")  # Debugging
+        # print(f" Generating presigned URL for {file.file_name}: {presigned_url}")  # Debugging
 
         file_list.append({
             "id": file.id,
